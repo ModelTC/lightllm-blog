@@ -98,11 +98,6 @@ favicons: # Favicons are also used in the manifest file. Syntax is 'size: path'
   1024: '/assets/logos/logo_1024.png'
 
 
-# 9. Site navigation
-navigation_header:
-- title: Home
-  url: /blog/
-
 navigation_footer:
 - title: Powered by ModelTC
 

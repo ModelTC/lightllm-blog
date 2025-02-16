@@ -1,12 +1,9 @@
 ---
 title: Reducing Overhead with Cuda Graph
 categories:
-- Feature
+- By MTC Team
 excerpt: |
   Cuda Graph is used to reduce overhead in LightLLM.
-feature_text: |
-  ## Reducing Overhead with Cuda Graph
-  Cuda Graph optimizes operations by packaging kernel launches, Tensor allocations, and similar tasks into a computational graph. 
 ---
 
 Cuda Graph optimizes operations by packaging kernel launches, Tensor allocations, and similar tasks into a computational graph. This graph allows for direct replay of operations, significantly reducing the overhead of repeated execution. While such overhead is negligible during the computation-intensive prefill phase, it becomes more pronounced during the decode phase.

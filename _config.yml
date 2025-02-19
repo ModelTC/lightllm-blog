@@ -11,6 +11,8 @@ exclude:
 - Gemfile.lock
 - alembic-jekyll-theme.gemspec
 - .jekyll-cache
+- elements.md
+- offline.md
 
 # 2. Installed Gems
 plugins:

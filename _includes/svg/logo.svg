@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+  <!-- Background -->
+  <rect width="500" height="500" fill="#E6ECF5" />
+
+  <!-- Light LLM Text -->
+  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="90" font-weight="bold" fill="#3366cc">
+    LIGHT
+  </text>
+  <text x="50%" y="62%" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#99A3D0">
+    LLM
+  </text>
+
+  <!-- Outline around LIGHT -->
+  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="90" font-weight="bold" fill="none" stroke="#99A3D0" stroke-width="2">
+    LIGHT
+  </text>
+</svg>
+

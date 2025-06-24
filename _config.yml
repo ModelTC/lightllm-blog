@@ -1,122 +1,225 @@
-# Site configuration
-# 1. Files excluded from Jekyll builds
-exclude:
-- README.md
-- CODE_OF_CONDUCT.md
-- CONTRIBUTING.md
-- screenshot.png
-- LICENSE
-- CNAME
-- Gemfile
-- Gemfile.lock
-- alembic-jekyll-theme.gemspec
-- .jekyll-cache
-- elements.md
-- offline.md
-
-# 2. Installed Gems
-plugins:
-- jekyll-sitemap
-- jekyll-mentions
-- jekyll-paginate
-- jekyll-seo-tag
-- jekyll-redirect-from
-- jekyll-feed
-- jekyll-commonmark
-- jekyll-include-cache
-- jemoji
-
-# 3. Gem settings
-paginate: 2 # jekyll-paginate > items per page
-paginate_path: blog/page:num # jekyll-paginate > blog page
-author: ModelTC # jekyll-seo-tag > default author
-# markdown: CommonMark # Markdown parse settings, CommonMark performs slightly better an others in build time
-# commonmark:
-  # options: ["SMART", "FOOTNOTES"]
-  # extensions: ["strikethrough", "autolink", "table"]
-
-# 4. Jekyll settings
-sass:
-  style: compressed # Style compression
-permalink: pretty  # Permalink style (/YYYY/MM/DD/page-name/)
-excerpt_separator: <!-- more --> # Marks end of excerpt in posts
-timezone: Europe/London # Timezone for blog posts and alike
-
-# 5. Collections
-collections:
-  posts:
-    title: Posts # Needed for Siteleaf
-    output: true
-    description: "Introductions to features, benchmarks, and more"
-    feature_image: "https://picsum.photos/2560/600?image=866"
-
-# 6. Jekyll collections settings
-defaults:
-  -
-    scope:
-      path: ""
-    values:
-      image: "/assets/default-social-image.png" # Default image for sharing
-  -
-    scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: post # Set the default layout for posts
-  -
-    scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: page # Set the default layout for pages
-
-# 7. Site settings
-encoding: utf-8 # Make sure the encoding is right
-lang: en-GB # Set the site language
-title: "Lightllm Blog" # Site name or title, also used in jekyll-seo-tag
-logo: "/assets/logos/logo.svg" # Site logo, also used in jekyll-seo-tag
-description: "Blogs for Lightllm"
-url: "https://ModelTC.github.io" # Site URL, also used in jekyll-seo-tag
-baseurl: "/lightllm-blog/" # Site baseurl, also used in jekyll-seo-tag
-repo: "https://github.com/ModelTC/lightllm" # Path to the GitHub repository, used in footer
-# email: "me@daviddarnes.com"
-# disqus: "alembic-1" # Blog post comments, uncomment the option and set the site ID from your Disqus account
-# date_format: "%-d %B %Y" # Blog post date formatting using placeholder formatting
-# google_analytics: ""
-# google_analytics_anonymize_ip: ""
-# service_worker: false # Will turn off the service worker if set to false
-# short_name: "Al" # The web application short name, defaults to the site title
-css_inline: true # Will insert all styles into a single <style> block in the <head> element and remove the style <link> reference
-
-# 8. Site favicons & manifest icons
-favicons: # Favicons are also used in the manifest file. Syntax is 'size: path'
-  16: '/assets/logos/logo_16.png'
-  32: '/assets/logos/logo_32.png'
-  96: '/assets/logos/logo_96.png'
-  120: '/assets/logos/logo_120.png'
-  144: '/assets/logos/logo_144.png'
-  180: '/assets/logos/logo_180.png'
-  512: '/assets/logos/logo_512.png'
-  1024: '/assets/logos/logo_1024.png'
-
-
-navigation_footer:
-- title: Powered by ModelTC
-
-sharing_links: # Appear at the bottom of single blog posts, add as desired. The value can be 'true' or the desired button colour
-  Twitter: "#0d94e7"
-  facebook: "#3B5998"
-  Email: true
-
-# Load custom fonts from fonts.google.com etc
+# Welcome to Jekyll!
 #
-# TIP: Try to keep the number of urls as low to reduce the performance cost
-#      If multiple fonts can be requested in a single url opt for this
-fonts:
-  preconnect_urls:
-    - https://fonts.gstatic.com
-  font_urls:
-    - https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+#
+# ,--------.      ,--.   ,--. ,--.
+# '--.  .--',---.  \  `.'  /,-'  '-.
+#    |  |  | .-. :  .'    \ '-.  .-'
+#    |  |  \   --. /  .'.  \  |  |
+#    `--'   `----''--'   '--' `--'
 
 
-full-width: true
+
+
+## => Site Settings
+##############################
+text_skin: ocean # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
+highlight_theme: default # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
+url     : # the base hostname & protocol for your site e.g. https://www.someone.com
+baseurl : # does not include hostname
+title   : LightLLM Blog
+description: > # this means to ignore newlines until "Language & timezone"
+  Your Site Description
+
+
+## => Language and Timezone
+##############################
+lang: # the language of your site, default as "en"
+timezone: Asia/Shanghai
+
+
+## => Author and Social
+##############################
+author:
+  type      : organization
+  name      : ModelTC
+  url       : https://github.com/ModelTC
+  avatar    : # blank
+  bio       : # blank
+  email     : # blank
+  facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
+  twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
+  weibo     : # "user_id"   the last part of your profile url, e.g. https://www.weibo.com/user_id/profile?...
+  googleplus: # "user_id"   the last part of your profile url, e.g. https://plus.google.com/u/0/user_id
+  telegram  : # "user_name" the last part of your profile url, e.g. https://t.me/user_name
+  medium    : # "user_name" the last part of your profile url, e.g. https://medium.com/user_name
+  zhihu     : # "user_name" the last part of your profile url, e.g. https://www.zhihu.com/people/user_name
+  douban    : # "user_name" the last part of your profile url, e.g. https://www.douban.com/people/user_name
+  linkedin  : # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name
+  github    : # "user_name" the last part of your profile url, e.g. https://github.com/user_name
+  npm       : # "user_name" the last part of your profile url, e.g. https://www.npmjs.com/~user_name
+
+
+## => GitHub Repository (if the site is hosted by GitHub)
+##############################
+repository: user_name/repo_name
+repository_tree: master
+
+
+## => Paths
+##############################
+paths:
+  root    : # title link url, "/" (default)
+  home    : # home layout url, "/" (default)
+  archive : # "/archive.html" (default)
+  rss     : # "/feed.xml" (default)
+
+
+## => Post
+##############################
+## excerpt
+excerpt_separator: <!--more-->
+
+## license
+license: CC-BY-NC-4.0 # "CC-BY-4.0", "CC-BY-SA-4.0", "CC-BY-NC-4.0", "CC-BY-ND-4.0"
+
+## TOC
+toc:
+  selectors: # "h1,h2,h3" (default)
+
+
+## => Markdown Enhancements
+##############################
+## Mathjax
+mathjax: # false (default), true
+mathjax_autoNumber: # false (default), true
+
+## Mermaid
+mermaid: # false (default), true
+
+## Chart
+chart: # false (default), true
+
+
+## => Paginate
+##############################
+paginate: 8
+paginate_path: /page:num # don't change this unless for special need
+
+
+## => Sources
+##############################
+sources: # bootcdn (default), unpkg
+
+
+## => Sharing
+##############################
+sharing:
+  provider: false # false (default), "addtoany", "addthis", "custom"
+
+  ## AddThis
+  addthis:
+    id: # AddThis pubid, e.g. ra-5xxxxxxxxxxx
+
+
+## => Comments
+##############################
+comments:
+  provider: false # false (default), "disqus", "gitalk", "valine", "custom"
+
+  ## Disqus
+  disqus:
+    shortname: # the Disqus shortname for the site
+
+  ## Gitalk
+  # please refer to https://github.com/gitalk/gitalk for more info.
+  gitalk:
+    clientID    : # GitHub Application Client ID
+    clientSecret: # GitHub Application Client Secret
+    repository  : # GitHub repo
+    owner       : # GitHub repo owner
+    admin: # GitHub repo owner and collaborators, only these guys can initialize GitHub issues, IT IS A LIST.
+      # - your GitHub Id
+
+  ## Valine
+  # please refer to https://valine.js.org/en/ for more info.
+  valine:
+    app_id      : # LeanCloud App id
+    app_key     : # LeanCloud App key
+    placeholder : # Prompt information
+    visitor     : # false (default)
+    meta        : # "[nick, mail, link]" (default) nickname, E-mail, Personal-site
+
+
+## => Pageview
+##############################
+pageview:
+  provider: false # false (default), "leancloud", "custom"
+
+  ## Leancloud
+  leancloud:
+    app_id    : # LeanCloud App id
+    app_key   : # LeanCloud App key
+    app_class : # LeanCloud App class
+
+
+## => Search
+##############################
+search:
+  provider: default # "default" (default), false, "google", "custom"
+
+  ## Google Custom Search Engine
+  google:
+    custom_search_engine_id: # Google Custom Search Engine ID
+
+
+## => Analytics
+##############################
+analytics:
+  provider: false # false (default), "google", "custom"
+
+  ## Google Analytics
+  google:
+    tracking_id : # Google Analytics id for the site
+    anonymize_ip: false # Anonymize IP tracking for Analytics
+
+
+## => Build
+##############################
+markdown    : kramdown
+highlighter : rouge
+permalink   : date
+
+exclude:
+  - CHANGELOG.md
+  - HOW_TO_RELEASE.md
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README-*.md
+  - README.md
+  - gulpfile.js
+  - jekyll-text-theme.gemspec
+  - package-lock.json
+  - package.json
+  - /docs
+  - /node_modules
+  - /screenshots
+  - /test
+  - /vendor
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: article
+      sharing: true
+      license: true
+      aside:
+        toc: true
+      show_edit_on_github: true
+      show_subscribe: true
+      pageview: true
+
+
+## => Plugins
+##############################
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jemoji

@@ -50,12 +50,12 @@ In the case of DeepSeek-V2, even with larger batches (average input length of 10
 
 The original kernel allocated thread blocks based on the number of attention heads and batch size. However, this design caused load imbalances in thread blocks when processing batches of uneven lengths, negatively affecting performance. To address this, LightLLM redesigned the Decoding kernel for Cuda Graph using the concept of Virtual Stream Processors (VSM). The issue with the previous kernel was the dynamic change in request lengths, which caused the intermediate memory size to vary. In the new design, the number of thread blocks (Grid Size) is fixed, and the context of each request is divided into fixed-size blocks. Each thread block iterates over all blocks, translating the dynamically changing lengths into a fixed number of iterations, ensuring that intermediate memory usage depends only on batch size, eliminating the need for pre-allocated memory. Additionally, the fixed-size blocks ensure that each thread block’s load is nearly balanced, improving performance when handling batches of uneven lengths. Testing of the new DeepSeekV2 Decoding kernel showed that the redesigned kernel significantly outperforms the previous design in decoding speed for longer inputs, even with the same batch size and sequence lengths.
 
-![Rate](/assets/images/blogs/01-cudagraph/rate.png)
+<img src="{{ site.baseurl }}/assets/images/blogs/01-cudagraph/rate.png"  style="zoom: 100%;" />
 
 
 We also evaluated the scalability of the new kernel against the original implementation. The test batch consisted of 128 requests of uniform length, ranging from 256 to 8192, with outlier requests set to 8k length. The results showed that the new kernel performed better overall, with minimal impact from outlier requests (which are significantly longer than the average length), making it more stable compared to the original kernel.
 
-![Scalibility](/assets/images/blogs/01-cudagraph/scalibility.png)
+<img src="{{ site.baseurl }}/assets/images/blogs/01-cudagraph/scalibility.png"  style="zoom: 100%;" />
 
     Experimental Environment:
         GPU: Single NVIDIA H800

@@ -1,8 +1,0 @@
-current directory: /Users/chenjunyi/Project/lightllm-blog/vendor/bundle/ruby/3.4.0/gems/google-protobuf-3.25.8/ext/google/protobuf_c
-/Users/chenjunyi/.rbenv/versions/3.4.4/bin/ruby -rrubygems /Users/chenjunyi/Project/lightllm-blog/vendor/bundle/ruby/3.4.0/gems/rake-10.5.0/bin/rake RUBYARCHDIR\=/Users/chenjunyi/Project/lightllm-blog/vendor/bundle/ruby/3.4.0/extensions/arm64-darwin-24/3.4.0/google-protobuf-3.25.8 RUBYLIBDIR\=/Users/chenjunyi/Project/lightllm-blog/vendor/bundle/ruby/3.4.0/extensions/arm64-darwin-24/3.4.0/google-protobuf-3.25.8
-rake aborted!
-NoMethodError: undefined method '=~' for an instance of Proc
-
-(See full trace by running task with --trace)
-
-rake failed, exit code 1

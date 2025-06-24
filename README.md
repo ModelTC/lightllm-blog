@@ -1,1 +1,0 @@
-This is the blog repo for lightllm based on [alembic](https://github.com/daviddarnes/alembic) theme.

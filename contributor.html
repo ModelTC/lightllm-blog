@@ -1,0 +1,163 @@
+---
+layout: page
+---
+<!DOCTYPE html>
+{%- include snippets/get-lang.html -%}
+<html lang="{{ __return }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Contributors</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="mb-8 text-gray-800">
+        <p class="mb-4 text-lg">
+            We extend our sincere gratitude to the many contributors who have participated in the
+            <span class="text-blue-700">LightLLM</span> project. Your efforts are invaluable!
+        </p>
+        <p class="mt-4 text-lg">
+            We warmly welcome more individuals to join this open-source project, contribute code, and help us add more models and new features!
+        </p>
+    </div>
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-4xl border border-gray-200">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">LightLLM Contributors</h1>
+
+        <div id="loadingMessage" class="text-center text-blue-600 font-medium">
+            Fetching contributors...
+        </div>
+
+        <div id="errorMessage" class="text-center text-red-600 font-medium hidden">
+            <!-- Error messages will be displayed here -->
+        </div>
+
+        <!-- Adjusted grid columns: 1 for default, 2 for small, 3 for medium, 4 for large screens -->
+        <!-- Reduced gap from 4 to 3 for tighter spacing between cards -->
+        <div id="contributorsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-6">
+            <!-- Contributors will be loaded here -->
+        </div>
+
+        <div id="noContributorsMessage" class="text-center text-gray-500 hidden mt-6">
+            No contributors found for this repository or the repository does not exist.
+        </div>
+    </div>
+    <script>
+      {%- include scripts/common.js -%}
+      // Directly call the function to fetch contributors on page load
+        fetchContributors();
+
+        async function fetchContributors() {
+            // Hardcode the owner and repository name as requested
+            const owner = 'ModelTC';
+            const repo = 'lightllm';
+
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const contributorsContainer = document.getElementById('contributorsContainer');
+            const noContributorsMessage = document.getElementById('noContributorsMessage');
+
+            // Clear previous messages and content
+            errorMessage.classList.add('hidden');
+            noContributorsMessage.classList.add('hidden');
+            contributorsContainer.innerHTML = ''; // Clear previous contributors
+            loadingMessage.classList.remove('hidden'); // Ensure loading message is visible initially
+
+            const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contributors`;
+
+            try {
+                const response = await fetch(apiUrl);
+
+                // Check if the response is successful (status code 2xx)
+                if (!response.ok) {
+                    if (response.status === 403) {
+                         // Handle rate limit or other forbidden errors
+                         throw new Error('API rate limit exceeded or access forbidden. Please wait and try again.');
+                    } else if (response.status === 404) {
+                         // Handle not found error
+                         throw new Error('Repository not found. Please check the owner and repository name.');
+                    } else {
+                         // Generic error for other HTTP issues
+                         throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                }
+
+                const contributors = await response.json();
+
+                loadingMessage.classList.add('hidden'); // Hide loading message
+
+                if (contributors.length === 0) {
+                    noContributorsMessage.classList.remove('hidden');
+                    return;
+                }
+
+                contributors.forEach(contributor => {
+                    const contributorCard = document.createElement('div');
+                    // Adjusted padding from p-4 to p-3 for smaller cards
+                    contributorCard.classList.add(
+                        'bg-gray-50', 'p-3', 'rounded-lg', 'shadow-sm', 'border', 'border-gray-200',
+                        'flex', 'flex-col', 'items-center', 'text-center', 'transform', 'transition',
+                        'duration-200', 'ease-in-out', 'hover:scale-105', 'hover:shadow-md'
+                    );
+
+                    const avatar = document.createElement('img');
+                    avatar.src = contributor.avatar_url;
+                    avatar.alt = `${contributor.login} avatar`;
+                    // Adjusted avatar size from w-20 h-20 to w-16 h-16 for smaller cards
+                    avatar.classList.add('w-16', 'h-16', 'rounded-full', 'mb-2', 'border-2', 'border-blue-300', 'object-cover');
+                    // Add error handling for image loading
+                    avatar.onerror = function() {
+                        this.onerror=null; // Prevent infinite loop if placeholder also fails
+                        this.src = `https://placehold.co/64x64/cccccc/333333?text=N/A`; // Placeholder image, adjusted size
+                    };
+
+                    const login = document.createElement('a');
+                    login.href = contributor.html_url;
+                    login.target = '_blank'; // Open in new tab
+                    login.rel = 'noopener noreferrer'; // Security best practice
+                    login.textContent = contributor.login;
+                    login.classList.add('text-base', 'font-semibold', 'text-blue-700', 'hover:underline', 'mb-1'); // Adjusted text size if needed
+
+                    // Removed the contributions count as requested
+                    // const contributions = document.createElement('p');
+                    // contributions.textContent = `Contributions: ${contributor.contributions}`;
+                    // contributions.classList.add('text-sm', 'text-gray-600');
+
+                    // Appending only avatar and login, as contributions are removed
+                    contributorCard.append(avatar, login);
+                    contributorsContainer.appendChild(contributorCard);
+                });
+
+            } catch (error) {
+                loadingMessage.classList.add('hidden'); // Hide loading message
+                errorMessage.textContent = `Error: ${error.message}`;
+                errorMessage.classList.remove('hidden');
+                console.error('Failed to fetch contributors:', error);
+            }
+        }
+    </script>
+  </body>
+</html>

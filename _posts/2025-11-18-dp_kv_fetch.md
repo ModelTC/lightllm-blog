@@ -1,7 +1,7 @@
 ---
 title: "Prefix KV Cache Transfer Between DP Rankers"
 tags:
-- By MTC Team
+- By ZIHAO WAN
 - New Feature
 excerpt: |
   To address the KV cache hit rate challenges in DP deployments, we introduce a prefix KV cache transfer mechanism between DP rankers, significantly reducing redundant computations.
@@ -36,6 +36,10 @@ We augmented the `Req` object with three new attributes to coordinate cache shar
 
 Since `Req` is already implemented using shared memory, all DP ranks can access and update these fields. During request initialization, each DP rank iterates through all requests to populate these values.
 
+<div style="text-align: center;">
+  <img src="{{ site.baseurl }}/assets/images/blogs/06-dp_kv_fetch/pic1.png"  style="zoom: 40%;" />
+</div>
+
 #### 2. Memory Manager Serialization
 
 Each DP rank serializes its `mem_manager` and stores it in shared memory, making it accessible to other ranks. However, we encountered a critical challenge during deserialization:
@@ -44,9 +48,16 @@ When deserializing `torch.tensor` objects, PyTorch's C++ implementation switches
 
 **Solution**: We modified the tensor rebuild function by introducing `p2p_fix_rebuild_cuda_tensor`, which explicitly sets `storage_device = torch.cuda.current_device()`. This ensures that the subsequent `kv_trans_for_dp` kernel can safely access data across multiple GPU devices simultaneously.
 
+<div style="text-align: center;">
+  <img src="{{ site.baseurl }}/assets/images/blogs/06-dp_kv_fetch/pic2.png"  style="zoom: 60%;" />
+</div>
 #### 3. KV Index Sharing
 
 Each DP rank identifies which requests require KV cache transfer to other ranks based on the three `Req` metadata fields. The corresponding `kv_indexes` for these requests are shared via shared memory, enabling efficient lookup by receiving ranks.
+
+<div style="text-align: center;">
+  <img src="{{ site.baseurl }}/assets/images/blogs/06-dp_kv_fetch/pic3.png"  style="zoom: 50%;" />
+</div>
 
 #### 4. Cache Transfer Execution
 
@@ -57,6 +68,10 @@ For each request requiring cache data from another rank, the receiving DP rank:
 3. Executes the `kv_trans_for_dp` kernel, which reads KV cache data from the source rank's `mem_manager.kv_buffer` using the shared `kv_indexes` and writes it to the local `mem_manager.kv_buffer`
 
 This approach enables zero-copy, direct GPU-to-GPU memory access across ranks, minimizing transfer overhead.
+
+<div style="text-align: center;">
+  <img src="{{ site.baseurl }}/assets/images/blogs/06-dp_kv_fetch/pic4.png"  style="zoom: 70%;" />
+</div>
 
 ## Performance Evaluation
 
